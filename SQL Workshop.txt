@@ -1,0 +1,79 @@
+create database SaleOrderQuiz;
+
+use SaleOrderQuiz;
+
+create table Customer ( 
+CustomerID INT NOT NULL PRIMARY KEY,
+CustomerFirstName VARCHAR(50) NOT NULL,
+CustomerLastName VARCHAR(50) NOT NULL,
+CustomerAddress VARCHAR(50) NOT NULL,
+CustomerCity VARCHAR(50) NOT NULL,
+CustomerPostCode CHAR(4) NULL,
+CustomerPhoneNumber CHAR(12) NULL
+);
+
+
+create table Inventory (
+InventoryID TINYINT NOT NULL PRIMARY KEY,
+InventoryName VARCHAR(50) NOT NULL,
+InventoryDescription VARCHAR(255) NULL
+);
+
+create table Employee (
+EmployeeID TINYINT NOT NULL PRIMARY KEY,
+EmployeeFirstName VARCHAR(50) NOT NULL,
+EmployeeLastName VARCHAR(50) NOT NULL,
+EmployeeExtension CHAR(4) NULL
+);
+
+CREATE TABLE Sales (
+SaleID TINYINT NOT NULL PRIMARY KEY,
+CustomerID INT NOT NULL,
+InventoryID TINYINT NOT NULL,
+EmployeeID TINYINT NOT NULL,
+SaleDate DATE NOT NULL,
+SaleQuantity INT NOT NULL,
+SaleUnitPrice DECIMAL(6, 2) NOT NULL,
+FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID),
+FOREIGN KEY (InventoryID) REFERENCES Inventory(InventoryID),
+FOREIGN KEY (EmployeeID) REFERENCES Employee(EmployeeID)
+);
+
+INSERT INTO Customer VALUES 
+(1, 'Ali', 'Hamouch', 'Hay Admine', 'Ait Melloul', '8000','0666778899'),
+(2, 'Hamza', 'Maizi', 'El Houda', 'Agadir', '8150','0612345678'),
+(3, 'Amine', 'Saidi', 'Rue Kennedy', 'Safi', '6400','0987543216');
+
+INSERT INTO Inventory VALUES
+(1, 'Laptop', 'High-performance laptop for business and gaming'),
+(2, 'Smartphone', 'Latest model smartphone with advanced features'),
+(3, 'Tablet', 'Portable tablet suitable for reading and browsing');
+
+INSERT INTO Employee VALUES
+(1, 'Mouad', 'Gasso', '1234'),
+(2, 'Ibrahim', 'Jamil', '5678'),
+(3, 'Oussama', 'Naser', NULL);
+
+INSERT INTO Sales VALUES
+(1, 1, 1, 1, '2024-12-23', 2, 1200.00),
+(2, 2, 2, 2, '2024-12-23', 1, 799.99),
+(3, 3, 3, 3, '2024-12-23', 5, 350.00);
+
+SELECT * FROM Customer;
+
+SELECT SaleID, SaleDate, (SaleQuantity * SaleUnitPrice) AS TotalPrice
+FROM Sales
+ORDER BY TotalPrice DESC;
+
+ALTER TABLE Customer
+ADD COLUMN CustomerEmail VARCHAR(100);
+
+UPDATE Customer
+SET CustomerEmail = 'Hamza@email.com'
+WHERE CustomerID = 2;
+
+INSERT INTO Customer VALUES 
+(5, 'Jack', 'Ross', 'BRT', 'New York', '6400','0987543216', 'jack@email.com');
+
+DELETE FROM Customer
+WHERE CustomerCity = 'New York';
